@@ -1,0 +1,30 @@
+Index: game.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># количество клеток\nboard_size = 3\nstep = 1\n# игровое поле\nboard = [1, 2, 3, 4, 5, 6, 7, 8, 9]\n\ndef draw_board():\n    \"\"\" Выводим игровое поле \"\"\"\n    print('_' * 4 * board_size)\n    for i in range(board_size):\n        print((' ' * 3 + '|') * 3)\n        print('', board[i * 3], '|', board[1 + i * 3], '|', board[2 + i * 3], '|')\n        print(('_' * 3 + '|') * 3)\n        pass\n\n\n\ndef start_game():\n    # текущий игрок\n    current_player = 'X'\n    # номер шага\n    step = 1\n    draw_board()\n\ndef game_step(index, char):\n    \"\"\" выполняем ход \"\"\"\n    if (index > 9 or index < 1 or board[index - 1] in ('X', 'O')):\n        return False\n    board[index - 1] = char\n    return True\n\n\ndef check_win():\n    \"\"\" Проверяем победу одного из игроков \"\"\"\n    while (step < 10) and (check_win() == False):\n        index = input('Ходит игрок ' + current_player + '. Введите номер поля (0 - выход):')\n        if (index == '0'):\n            break\n        # Проверка ввода\n        try:\n            index = int(index)\n        except ValueError:\n            print('Неверный ввод! Повторите!')\n            continue\n\n        # если получилось сделать шаг\n        if (game_step(index, current_player)):\n            print('Удачный ход')\n\n            if (current_player == 'X'):\n                current_player = 'O'\n            else:\n                current_player = 'X'\ndef start_game():\n    draw_board()\n\nprint('Добро пожаловать в крестики-нолики!')\nstart_game()\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/game.py b/game.py
+--- a/game.py	(revision f8e0be85f9f96f7510aaa83348c61cd4daab6292)
++++ b/game.py	(date 1729289991878)
+@@ -30,6 +30,19 @@
+     return True
+ 
+ 
++def check_win():
++    """ Проверяем победу одного из игроков """
++    win_combination = (
++        (0, 1, 2), (3, 4, 5), (6, 7, 8),
++        (0, 3, 6), (1, 4, 7), (2, 5, 8),
++        (0, 4, 8), (2, 4, 6)
++    )
++
++    for pos in win_combination:
++        if (board[pos[0]] == board[pos[1]] == board[pos[2]]):
++            return board[pos[0]]
++    return False
++
+ def check_win():
+     """ Проверяем победу одного из игроков """
+     while (step < 10) and (check_win() == False):
