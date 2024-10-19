@@ -12,6 +12,13 @@ def draw_board():
         print(('_' * 3 + '|') * 3)
         pass
 
+def game_step(index, char):
+    """ выполняем ход """
+    if index > 9 or index < 1 or board[index - 1] in ('X', 'O'):
+        return False
+    board[index - 1] = char
+    return True
+
 def start_game():
     draw_board()
 
