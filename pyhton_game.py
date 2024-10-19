@@ -19,8 +19,47 @@ def game_step(index, char):
     board[index - 1] = char
     return True
 
+
+def check_win():
+    """ Проверяем победу одного из игроков """
+    win_combination = (
+        (0, 1, 2), (3, 4, 5), (6, 7, 8),
+        (0, 3, 6), (1, 4, 7), (2, 5, 8),
+        (0, 4, 8), (2, 4, 6)
+    )
+
+    for pos in win_combination:
+        if board[pos[0]] == board[pos[1]] == board[pos[2]]:
+            return board[pos[0]]
+    return False
+
 def start_game():
+    # текущий игрок
+    current_player = 'X'
+    # номер шага
+    step = 1
     draw_board()
+
+    while step < 10 and check_win() == False:
+        index = input(f'Ходит игрок {current_player}. Введите номер поля (0 - выход): ')
+        if index == '0':
+            break
+
+            # Проверка ввода
+        try:
+            index = int(index)
+        except ValueError:
+            print('Неверный ввод! Повторите!')
+            continue
+
+            # если получилось сделать шаг
+        if game_step(index, current_player):
+            print('Удачный ход')
+
+            if current_player == 'X':
+                current_player = 'O'
+            else:
+                current_player = 'X'
 
 print('Добро пожаловать в крестики-нолики!')
 start_game()
