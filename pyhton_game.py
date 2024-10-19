@@ -61,5 +61,16 @@ def start_game():
             else:
                 current_player = 'X'
 
+            draw_board()
+            # увеличим номер хода
+            step += 1
+        else:
+            print('Неверный номер! Повторите!')
+
+    if step == 10:
+        print('Игра окончена. Ничья!')
+    else:
+        print(f'Выиграл {check_win()}')
+
 print('Добро пожаловать в крестики-нолики!')
 start_game()
